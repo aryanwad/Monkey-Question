@@ -6,139 +6,72 @@
   <title>💐 A Question</title>
   <style>
     :root{
-      --bg1:#fff1f7;
-      --bg2:#ffe6f1;
-      --ink:#222235;
-      --pink:#ff4fa4;
-      --pink2:#ff78bd;
-      --card:#ffffff;
-      --shadow: 0 18px 45px rgba(0,0,0,.12);
+      --ink:#1e1e2d;
+      --card: rgba(255,255,255,0.78);
+      --border: rgba(255,255,255,0.65);
+      --shadow: 0 22px 60px rgba(0,0,0,.14);
       --radius: 22px;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
+      overflow:hidden;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--ink);
-      min-height:100vh;
-      display:grid;
-      place-items:center;
-      background:
-        radial-gradient(1200px 700px at 20% 25%, #ffffff 0%, var(--bg1) 35%, var(--bg2) 100%);
-      overflow:hidden;
+      background: radial-gradient(1200px 700px at 20% 25%, #ffffff 0%, #fff1f7 35%, #ffe6f1 100%);
     }
-
-    /* floating background hearts */
-    .bg-heart{
-      position:absolute;
-      width:18px; height:18px;
-      transform: rotate(45deg);
-      opacity:.16;
-      filter: blur(.2px);
-      background: #ff8bc8;
-      animation: floatUp linear infinite;
-    }
-    .bg-heart:before,.bg-heart:after{
-      content:"";
-      position:absolute;
-      width:18px; height:18px;
-      background:#ff8bc8;
-      border-radius:50%;
-    }
-    .bg-heart:before{ left:-9px; top:0;}
-    .bg-heart:after{ left:0; top:-9px;}
-    @keyframes floatUp{
-      from{ transform: translateY(40px) rotate(45deg); }
-      to{ transform: translateY(-120vh) rotate(45deg); }
-    }
-
-    .wrap{
-      width:min(1100px, 95vw);
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 26px;
-      align-items:center;
-    }
-    @media (max-width: 980px){
-      .wrap{ grid-template-columns: 1fr; gap:18px; }
-    }
-
-    .left{
-      position:relative;
-      padding: 18px 6px;
-      min-height: 560px;
-      display:grid;
-      place-items:center;
-    }
-
     canvas{
-      width:100%;
-      max-width:560px;
-      aspect-ratio: 1 / 1;
-      border-radius: 28px;
+      position:fixed;
+      inset:0;
+      width:100vw;
+      height:100vh;
+      display:block;
     }
 
-    .top-note{
-      position:absolute;
-      top: 18px;
-      left: 18px;
-      font-weight:700;
-      font-size: 18px;
-      opacity:.92;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      background: rgba(255,255,255,.65);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,.7);
-      padding: 10px 14px;
-      border-radius: 999px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    }
-
-    .right{
-      position:relative;
-      min-height: 560px;
+    /* UI overlay */
+    .ui{
+      position:fixed;
+      inset:0;
       display:grid;
       place-items:center;
+      pointer-events:none;
+      opacity:0;
+      transform: translateY(8px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .ui.show{
+      opacity:1;
+      transform: translateY(0);
+      pointer-events:auto;
     }
 
     .card{
-      width:100%;
-      max-width: 460px;
+      width:min(520px, 92vw);
       background: var(--card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 22px;
-      border: 1px solid rgba(255,255,255,.8);
-      transform: translateY(10px);
-      opacity:0;
-      pointer-events:none;
     }
-    .card.show{
-      opacity:1;
-      pointer-events:auto;
-      transform: translateY(0px);
-      transition: opacity .55s ease, transform .55s ease;
-    }
-
     h1{
-      margin: 6px 0 10px;
-      font-size: 44px;
+      margin: 6px 0 0;
+      font-size: clamp(36px, 5vw, 52px);
       line-height: 1.02;
       letter-spacing: -0.6px;
     }
     .subtitle{
-      margin:0 0 14px;
+      margin: 10px 0 14px;
       opacity:.78;
-      font-size:16px;
+      font-size: 15px;
     }
 
     .meme{
       width:100%;
       height: 220px;
       border-radius: 18px;
-      background: linear-gradient(135deg, #ffe3f2, #ffeef7);
+      background: linear-gradient(135deg, rgba(255,210,230,.8), rgba(255,238,247,.9));
       border: 1px dashed rgba(255,79,164,.55);
       display:grid;
       place-items:center;
@@ -155,7 +88,7 @@
     .meme .hint{
       text-align:center;
       padding: 0 18px;
-      color:#7b4562;
+      color:#6f3f5a;
       font-size: 14px;
       line-height:1.35;
     }
@@ -163,9 +96,8 @@
     .btn-row{
       display:flex;
       gap: 12px;
-      align-items:center;
       justify-content:center;
-      margin-top: 4px;
+      margin-top: 6px;
     }
     button{
       border:none;
@@ -177,21 +109,13 @@
       transition: transform .12s ease, filter .12s ease;
     }
     button:active{ transform: scale(.98); }
-
     .yes{
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      background: linear-gradient(135deg, #ff4fa4, #ff78bd);
       color:white;
-      width: 170px;
-      box-shadow: 0 14px 30px rgba(255,79,164,.35);
+      width: 180px;
+      box-shadow: 0 14px 30px rgba(255,79,164,.30);
     }
     .yes:hover{ filter: brightness(1.03); }
-
-    .tiny{
-      font-size: 13px;
-      opacity:.72;
-      text-align:center;
-      margin-top: 12px;
-    }
 
     .accepted{
       display:none;
@@ -200,20 +124,26 @@
       border-radius: 16px;
       background: rgba(255,79,164,.10);
       border: 1px solid rgba(255,79,164,.25);
-      font-weight: 700;
+      font-weight: 750;
       text-align:center;
     }
     .accepted.show{ display:block; }
 
-    /* celebration hearts */
+    .tiny{
+      font-size: 13px;
+      opacity:.72;
+      text-align:center;
+      margin-top: 12px;
+    }
+
+    /* celebration hearts (DOM particles) */
     .pop-heart{
       position:fixed;
       width:16px; height:16px;
       transform: rotate(45deg);
-      opacity:1;
       pointer-events:none;
-      background: #ff4fa4;
       z-index: 9999;
+      background: #ff4fa4;
     }
     .pop-heart:before,.pop-heart:after{
       content:"";
@@ -228,154 +158,135 @@
 </head>
 
 <body>
-  <!-- background hearts -->
-  <script>
-    // sprinkle floating background hearts
-    for (let i=0;i<18;i++){
-      const h = document.createElement('div');
-      h.className = 'bg-heart';
-      const left = Math.random()*100;
-      const dur = 10 + Math.random()*14;
-      const delay = -Math.random()*dur;
-      const size = 10 + Math.random()*18;
-      h.style.left = left+'vw';
-      h.style.bottom = (-10 - Math.random()*30)+'vh';
-      h.style.animationDuration = dur+'s';
-      h.style.animationDelay = delay+'s';
-      h.style.width = size+'px';
-      h.style.height = size+'px';
-      h.style.opacity = (0.09 + Math.random()*0.16).toFixed(2);
-      h.style.background = (Math.random()<0.4)?'#ff4fa4':'#ff8bc8';
-      document.body.appendChild(h);
-    }
-  </script>
+  <canvas id="c"></canvas>
 
-  <div class="wrap">
-    <section class="left">
-      <div class="top-note">💐 Made for you</div>
-      <canvas id="flower" width="800" height="800"></canvas>
-    </section>
+  <div class="ui" id="ui">
+    <div class="card">
+      <h1 id="q1">Will you be my</h1>
+      <h1 id="q2" style="margin-top:-6px;">Valentine?</h1>
+      <p class="subtitle">I made this for you 💐 (click YES)</p>
 
-    <section class="right">
-      <div class="card" id="card">
-        <h1 id="q1">Will you be my</h1>
-        <h1 id="q2" style="margin-top:-6px;">Valentine?</h1>
-        <p class="subtitle" id="subtitle">Open the surprise… then click YES 💝</p>
-
-        <div class="meme" id="memeBox">
-          <img id="memeImg" alt="meme" />
-          <div class="hint" id="memeHint">
-            Drop <b>meme.gif</b> or <b>meme.png</b> next to this file<br/>
-            and it will appear here ✨
-          </div>
+      <div class="meme">
+        <img id="memeImg" alt="meme" />
+        <div class="hint" id="memeHint">
+          Optional: add <b>meme.gif</b> or <b>meme.png</b> next to this file<br/>
+          and it will show here ✨
         </div>
-
-        <div class="btn-row">
-          <button class="yes" id="yesBtn">YES 💘</button>
-        </div>
-
-        <div class="accepted" id="accepted">
-          YAYYYYY 💞<br/>Okay now I owe you a virtual bouquet 🌹🌹🌹
-        </div>
-
-        <div class="tiny">Tip: if you want, customize the text at the top of the HTML.</div>
       </div>
-    </section>
+
+      <div class="btn-row">
+        <button class="yes" id="yesBtn">YES 💘</button>
+      </div>
+
+      <div class="accepted" id="accepted">
+        YAYYYYY 💞<br/>Okay now you officially owe me a FaceTime 😭
+      </div>
+
+      <div class="tiny">Tip: change the text in the HTML to her nickname.</div>
+    </div>
   </div>
 
   <script>
     // ---------------------------
-    // Load meme.gif / meme.png if present
+    // Optional meme load
     // ---------------------------
     (function loadMeme(){
       const img = document.getElementById('memeImg');
       const hint = document.getElementById('memeHint');
-
-      const tryFiles = ['meme.gif','meme.png','meme.jpg','meme.jpeg'];
-      let idx = 0;
-
-      function tryNext(){
-        if (idx >= tryFiles.length) return;
-        const src = tryFiles[idx++];
-        const test = new Image();
-        test.onload = () => {
-          img.src = src;
-          img.style.display = 'block';
-          hint.style.display = 'none';
-        };
-        test.onerror = tryNext;
-        test.src = src;
+      const files = ['meme.gif','meme.png','meme.jpg','meme.jpeg'];
+      let i = 0;
+      function next(){
+        if(i >= files.length) return;
+        const src = files[i++];
+        const probe = new Image();
+        probe.onload = () => { img.src = src; img.style.display = 'block'; hint.style.display = 'none'; };
+        probe.onerror = next;
+        probe.src = src;
       }
-      tryNext();
+      next();
     })();
 
     // ---------------------------
-    // Flower canvas animation
+    // Canvas setup
     // ---------------------------
-    const canvas = document.getElementById('flower');
+    const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
 
-    const center = { x: 400, y: 420 };
-    let start = performance.now();
+    function resize(){
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = "100vw";
+      canvas.style.height = "100vh";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // draw in CSS pixels
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
-    function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
-    function smoothstep(t){ t = clamp(t,0,1); return t*t*(3-2*t); }
-    function lerp(a,b,t){ return a+(b-a)*t; }
+    const ui = document.getElementById('ui');
 
-    function drawStem(grow){
-      // stem curve
+    // ---------------------------
+    // Math helpers
+    // ---------------------------
+    const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+    const lerp  = (a,b,t)=>a+(b-a)*t;
+    const smoothstep = (t)=>{ t=clamp(t,0,1); return t*t*(3-2*t); };
+
+    // Background sparkly hearts (canvas)
+    function drawTinyHeart(x,y,s,rot,alpha, color){
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.rotate(rot);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      // heart-ish shape using bezier
+      ctx.moveTo(0, s*0.3);
+      ctx.bezierCurveTo(-s*0.6, -s*0.3, -s*0.7, s*0.55, 0, s*0.9);
+      ctx.bezierCurveTo(s*0.7, s*0.55, s*0.6, -s*0.3, 0, s*0.3);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // ---------------------------
+    // Flower rendering
+    // Unwind longer: petals are drawn as spiral "ribbons" that expand
+    // ---------------------------
+    function drawStem(base, tip, tGrow, thickness){
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
+      const x0 = base.x, y0 = base.y;
+      const x1 = tip.x,  y1 = tip.y;
 
-      const x0 = center.x - 30, y0 = 760;
-      const x1 = center.x, y1 = center.y + 30;
+      // slight curve control
+      const cx = lerp(x0, x1, 0.35) + (x1-x0)*0.1;
+      const cy = lerp(y0, y1, 0.35) - 120;
 
-      // quadratic control
-      const cx = center.x - 120, cy = 610;
-
-      // draw partial quadratic by sampling points
-      const steps = 80;
+      const steps = 90;
       ctx.beginPath();
       for(let i=0;i<=steps;i++){
-        const t = (i/steps) * grow;
-        const x = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1;
-        const y = (1-t)*(1-t)*y0 + 2*(1-t)*t*cy + t*t*y1;
+        const tt = (i/steps) * tGrow;
+        const x = (1-tt)*(1-tt)*x0 + 2*(1-tt)*tt*cx + tt*tt*x1;
+        const y = (1-tt)*(1-tt)*y0 + 2*(1-tt)*tt*cy + tt*tt*y1;
         if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
       }
       ctx.strokeStyle = "#16784a";
-      ctx.lineWidth = 26;
+      ctx.lineWidth = thickness;
       ctx.stroke();
 
       ctx.strokeStyle = "#2bb36a";
-      ctx.lineWidth = 14;
+      ctx.lineWidth = thickness*0.55;
       ctx.stroke();
-
-      // leaves (appear with grow)
-      const leafA = smoothstep((grow-0.35)/0.65);
-      if (leafA > 0.02){
-        drawLeaf(
-          {x: lerp(x0,x1,0.58), y: lerp(y0,y1,0.58)},
-          {x: lerp(x0,x1,0.58)-220*leafA, y: lerp(y0,y1,0.58)-60*leafA},
-          62*leafA,
-          "#2aa45f"
-        );
-        drawLeaf(
-          {x: lerp(x0,x1,0.72), y: lerp(y0,y1,0.72)},
-          {x: lerp(x0,x1,0.72)+240*leafA, y: lerp(y0,y1,0.72)-40*leafA},
-          58*leafA,
-          "#239857"
-        );
-      }
     }
 
-    function drawLeaf(p0, p1, width, color){
+    function drawLeaf(p0, p1, width, color, outlineAlpha=0.12){
       const dx = p1.x - p0.x, dy = p1.y - p0.y;
       const len = Math.hypot(dx, dy) || 1;
       const ux = dx/len, uy = dy/len;
       const nx = -uy, ny = ux;
 
       const pts = [];
-      const steps = 26;
+      const steps = 28;
       for(let i=0;i<=steps;i++){
         const t=i/steps;
         const w=width*Math.sin(Math.PI*t);
@@ -386,6 +297,7 @@
         const w=width*Math.sin(Math.PI*t);
         pts.push({x:p0.x+dx*t-nx*w, y:p0.y+dy*t-ny*w});
       }
+
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
       for(const p of pts) ctx.lineTo(p.x,p.y);
@@ -393,131 +305,204 @@
       ctx.fillStyle = color;
       ctx.fill();
 
-      ctx.strokeStyle = "rgba(0,0,0,.10)";
+      ctx.globalAlpha = outlineAlpha;
+      ctx.strokeStyle = "#000";
       ctx.lineWidth = 2;
       ctx.stroke();
+      ctx.globalAlpha = 1;
     }
 
-    function drawPetal(angle, bloom, layer){
-      const L = (layer===0) ? lerp(40, 230, bloom) : lerp(30, 180, bloom);
-      const W = (layer===0) ? lerp(10, 110, bloom) : lerp(10, 80, bloom);
+    function drawSpiralBloom(center, bloom, palette, twist, petalCount=18){
+      // bloom in [0..1] controls how much spiral is revealed
+      // We draw multiple "petal ribbons" as spirals expanding outward.
+      const reveal = smoothstep(bloom);
+      const maxTurns = 3.4;              // longer unwind feel
+      const turns = lerp(0.0, maxTurns, reveal);
+      const maxR = lerp(12, 150, reveal);
 
-      // build teardrop shape points in local, then rotate
-      const steps = 34;
-      const pts = [];
+      // petal ribbons
+      for(let i=0;i<petalCount;i++){
+        const baseAng = (i/petalCount)*Math.PI*2 + twist;
+        const ribbon = i % 3; // vary thickness/opacity
+        const ribbonAlpha = ribbon===0 ? 0.95 : (ribbon===1 ? 0.78 : 0.62);
+        const strokeW = ribbon===0 ? 14 : (ribbon===1 ? 10 : 7);
 
-      for(let i=0;i<=steps;i++){
-        const t=i/steps;
-        const x = -W*Math.sin(Math.PI*t)*(0.78+0.22*t);
-        const y = -L*Math.pow(t, 1.08);
-        pts.push({x,y});
-      }
-      for(let i=steps;i>=0;i--){
-        const t=i/steps;
-        const x = W*Math.sin(Math.PI*t)*(0.78+0.22*t);
-        const y = -L*Math.pow(t, 1.08);
-        pts.push({x,y});
-      }
+        ctx.save();
+        ctx.globalAlpha = ribbonAlpha;
 
-      // slight curl while opening
-      const curl = lerp(0.30, 0.04, bloom);
+        const grad = ctx.createRadialGradient(center.x, center.y, 8, center.x, center.y, maxR+40);
+        grad.addColorStop(0, palette.inner);
+        grad.addColorStop(0.55, palette.mid);
+        grad.addColorStop(1, palette.outer);
 
-      ctx.beginPath();
-      for(let i=0;i<pts.length;i++){
-        const p = pts[i];
-        const tipFactor = clamp((-p.y)/L, 0, 1);
-        const bend = curl * (tipFactor*tipFactor) * (Math.cos(angle)>=0 ? 1 : -1);
-        const th = angle + bend;
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = strokeW;
+        ctx.lineCap = "round";
 
-        const xr = p.x*Math.cos(th) - p.y*Math.sin(th);
-        const yr = p.x*Math.sin(th) + p.y*Math.cos(th);
-
-        const X = center.x + xr;
-        const Y = center.y + yr + (layer===1 ? 10 : 0);
-
-        if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y);
-      }
-      ctx.closePath();
-
-      const fill = (layer===0) ? "rgba(255, 135, 200, 0.95)" : "rgba(255, 95, 170, 0.95)";
-      const stroke = (layer===0) ? "rgba(255, 70, 150, 0.55)" : "rgba(235, 40, 120, 0.6)";
-
-      ctx.fillStyle = fill;
-      ctx.fill();
-
-      ctx.strokeStyle = stroke;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    }
-
-    function drawCenter(bloom){
-      // pollen
-      const r = lerp(18, 44, bloom);
-      ctx.beginPath();
-      ctx.arc(center.x, center.y, r, 0, Math.PI*2);
-      ctx.fillStyle = "#ffd25a";
-      ctx.fill();
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = "rgba(220,140,40,.65)";
-      ctx.stroke();
-
-      // dots
-      for(let i=0;i<18;i++){
-        const a = (i/18)*Math.PI*2;
-        const rr = 22 + 4*Math.sin(performance.now()/500 + i);
-        const x = center.x + rr*Math.cos(a);
-        const y = center.y + rr*Math.sin(a);
         ctx.beginPath();
-        ctx.arc(x,y,3.2,0,Math.PI*2);
-        ctx.fillStyle = "rgba(210,140,55,.9)";
+        const steps = 220;
+        for(let s=0;s<=steps;s++){
+          const t = s/steps;
+          const theta = baseAng + (turns * 2*Math.PI) * t;
+          const r = (maxR) * (t**0.85);
+          // slight waviness makes it feel like "unwinding"
+          const wob = 1 + 0.06*Math.sin(7*t*2*Math.PI + i);
+          const x = center.x + Math.cos(theta) * r * wob;
+          const y = center.y + Math.sin(theta) * r * wob;
+
+          if(s===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+
+        // subtle highlight
+        ctx.globalAlpha = ribbonAlpha*0.35;
+        ctx.strokeStyle = "rgba(255,255,255,0.65)";
+        ctx.lineWidth = Math.max(2, strokeW*0.22);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      // flower center
+      const cr = lerp(8, 30, reveal);
+      const centerGrad = ctx.createRadialGradient(center.x-6, center.y-6, 4, center.x, center.y, cr+20);
+      centerGrad.addColorStop(0, "#fff1b8");
+      centerGrad.addColorStop(1, "#ffcb59");
+      ctx.fillStyle = centerGrad;
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, cr, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(200,120,30,0.55)";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // pollen dots
+      for(let k=0;k<16;k++){
+        const a = (k/16)*Math.PI*2;
+        const rr = cr*0.72 + 3*Math.sin(performance.now()/450 + k);
+        const x = center.x + Math.cos(a)*rr;
+        const y = center.y + Math.sin(a)*rr;
+        ctx.fillStyle = "rgba(190,120,35,0.88)";
+        ctx.beginPath();
+        ctx.arc(x,y, 2.6, 0, Math.PI*2);
         ctx.fill();
       }
     }
 
-    function draw(now){
-      const elapsed = (now - start) / 1000;
+    // ---------------------------
+    // Scene: 3 flowers, full-screen
+    // ---------------------------
+    const palettes = {
+      pink:   { inner:"rgba(255,210,235,1)", mid:"rgba(255,120,190,1)", outer:"rgba(255,70,160,1)" },
+      red:    { inner:"rgba(255,210,210,1)", mid:"rgba(255,110,120,1)", outer:"rgba(235,40,70,1)"  },
+      yellow: { inner:"rgba(255,250,210,1)", mid:"rgba(255,225,120,1)", outer:"rgba(255,195,60,1)"  }
+    };
 
-      // Stage timing
-      const stemT = smoothstep(elapsed / 1.6);
-      const bloomT = smoothstep((elapsed - 1.1) / 2.2);
+    function layoutFlowers(){
+      const w = window.innerWidth;
+      const h = window.innerHeight;
 
-      // clear
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      // soft vignette
-      const g = ctx.createRadialGradient(340, 320, 80, 400, 420, 520);
-      g.addColorStop(0, "rgba(255,255,255,0.0)");
-      g.addColorStop(1, "rgba(255,140,200,0.10)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-
-      drawStem(stemT);
-
-      // petals: outer then inner
-      const wiggle1 = 0.18*Math.sin(elapsed*1.3);
-      const wiggle2 = 0.16*Math.sin(elapsed*1.6 + 1);
-
-      const outer = 10;
-      for(let i=0;i<outer;i++){
-        const ang = (i/outer)*Math.PI*2 + wiggle1;
-        drawPetal(ang, bloomT, 0);
-      }
-      const inner = 8;
-      for(let i=0;i<inner;i++){
-        const ang = (i/inner)*Math.PI*2 + 0.25 + wiggle2;
-        drawPetal(ang, bloomT, 1);
-      }
-
-      drawCenter(bloomT);
-
-      // show card when bloom done
-      if (elapsed > 3.4){
-        document.getElementById('card').classList.add('show');
-      }
-
-      requestAnimationFrame(draw);
+      // positions feel nice on both desktop + mobile
+      return [
+        {
+          color: palettes.yellow,
+          base: {x: w*0.22, y: h*1.08},
+          tip:  {x: w*0.28, y: h*0.52},
+          bloomCenter: {x: w*0.30, y: h*0.48},
+          twist: 0.3,
+          delay: 0.00
+        },
+        {
+          color: palettes.pink,
+          base: {x: w*0.52, y: h*1.10},
+          tip:  {x: w*0.52, y: h*0.42},
+          bloomCenter: {x: w*0.52, y: h*0.38},
+          twist: 0.9,
+          delay: 0.35
+        },
+        {
+          color: palettes.red,
+          base: {x: w*0.82, y: h*1.06},
+          tip:  {x: w*0.74, y: h*0.54},
+          bloomCenter: {x: w*0.72, y: h*0.50},
+          twist: 1.6,
+          delay: 0.70
+        }
+      ];
     }
-    requestAnimationFrame(draw);
+
+    let flowers = layoutFlowers();
+    window.addEventListener('resize', ()=>{ resize(); flowers = layoutFlowers(); });
+
+    // Longer unwind timings
+    const STEM_DUR = 3.6;     // longer growth
+    const BLOOM_DUR = 6.8;    // longer unwind bloom
+    const UI_TIME = STEM_DUR + BLOOM_DUR + 0.8;
+
+    const t0 = performance.now();
+
+    function drawFrame(now){
+      const t = (now - t0) / 1000;
+
+      // background
+      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+      // dreamy gradient overlay
+      const bg = ctx.createRadialGradient(
+        window.innerWidth*0.25, window.innerHeight*0.25, 80,
+        window.innerWidth*0.55, window.innerHeight*0.55, Math.max(window.innerWidth, window.innerHeight)
+      );
+      bg.addColorStop(0, "rgba(255,255,255,1)");
+      bg.addColorStop(0.45, "rgba(255,240,248,1)");
+      bg.addColorStop(1, "rgba(255,224,240,1)");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
+
+      // tiny hearts drifting (canvas)
+      for(let i=0;i<22;i++){
+        const x = (i*97 + (t*18)) % (window.innerWidth + 120) - 60;
+        const y = (window.innerHeight*0.15) + (i*33 % 240) + 22*Math.sin(t*1.1 + i);
+        drawTinyHeart(x, y, 10 + (i%4)*2, 0.35*Math.sin(t + i), 0.08 + (i%5)*0.012, (i%2? "#ff4fa4":"#ff8bc8"));
+      }
+
+      // draw flowers
+      for(const f of flowers){
+        const localT = Math.max(0, t - f.delay);
+
+        // stem growth
+        const stemT = smoothstep(localT / STEM_DUR);
+
+        // draw stem
+        drawStem(f.base, f.tip, stemT, 26);
+
+        // leaves appear mid-stem
+        const leafT = smoothstep((stemT - 0.3) / 0.7);
+        if (leafT > 0.02){
+          const pA = { x: lerp(f.base.x, f.tip.x, 0.62), y: lerp(f.base.y, f.tip.y, 0.62) };
+          const pB = { x: lerp(f.base.x, f.tip.x, 0.76), y: lerp(f.base.y, f.tip.y, 0.76) };
+
+          drawLeaf(pA, {x: pA.x - 220*leafT, y: pA.y - 70*leafT}, 62*leafT, "#2aa45f");
+          drawLeaf(pB, {x: pB.x + 240*leafT, y: pB.y - 55*leafT}, 58*leafT, "#239857");
+        }
+
+        // bloom starts slightly before stem ends for "unwind" vibe
+        const bloomStart = STEM_DUR*0.65;
+        const bloomT = smoothstep((localT - bloomStart) / BLOOM_DUR);
+
+        // sway
+        const sway = 0.06*Math.sin(t*0.9 + f.twist) + 0.03*Math.sin(t*1.4 + f.twist*2);
+        const bloomCenter = { x: f.bloomCenter.x, y: f.bloomCenter.y };
+
+        drawSpiralBloom(bloomCenter, bloomT, f.color, f.twist + sway, 18);
+      }
+
+      // show UI after everything blooms
+      if (t > UI_TIME) ui.classList.add('show');
+
+      requestAnimationFrame(drawFrame);
+    }
+    requestAnimationFrame(drawFrame);
 
     // ---------------------------
     // YES button celebration
@@ -525,7 +510,7 @@
     const yesBtn = document.getElementById('yesBtn');
     const accepted = document.getElementById('accepted');
 
-    function popHearts(x,y, n=45){
+    function popHearts(x,y, n=70){
       for(let i=0;i<n;i++){
         const h = document.createElement('div');
         h.className = 'pop-heart';
@@ -533,36 +518,31 @@
         h.style.width = size+'px';
         h.style.height = size+'px';
 
-        // different colors
-        const colors = ['#ff4fa4','#ff78bd','#ff3b7d','#ff9ad0','#ffd1e7'];
+        const colors = ['#ff4fa4','#ff78bd','#ff3b7d','#ff9ad0','#ffd1e7','#ffd25a'];
         h.style.background = colors[(Math.random()*colors.length)|0];
 
-        h.style.left = (x - size/2) + 'px';
-        h.style.top  = (y - size/2) + 'px';
-
-        const ang = Math.random()*Math.PI*2;
-        const spd = 3 + Math.random()*6;
-        const vx = Math.cos(ang)*spd;
-        const vy = Math.sin(ang)*spd - (5 + Math.random()*3);
-
-        const gravity = 0.18 + Math.random()*0.08;
         let px = x, py = y;
-        let life = 90 + (Math.random()*60|0);
+        const ang = Math.random()*Math.PI*2;
+        const spd = 3 + Math.random()*7;
+        let vx = Math.cos(ang)*spd;
+        let vy = Math.sin(ang)*spd - (6 + Math.random()*3);
 
+        const gravity = 0.16 + Math.random()*0.10;
+        let life = 95 + (Math.random()*75|0);
+
+        h.style.left = (px - size/2) + 'px';
+        h.style.top  = (py - size/2) + 'px';
         document.body.appendChild(h);
 
         function step(){
           life--;
-          py += vy;
+          vy += gravity;
           px += vx;
-          // gravity pulls down
-          // (simulate by increasing vy via gravity)
-          // but keep it simple: add to py directly
-          py += gravity*(90-life)/6;
+          py += vy;
 
           h.style.left = (px - size/2) + 'px';
           h.style.top  = (py - size/2) + 'px';
-          h.style.opacity = (life/150).toFixed(2);
+          h.style.opacity = (life/170).toFixed(2);
 
           if(life>0) requestAnimationFrame(step);
           else h.remove();
@@ -571,13 +551,16 @@
       }
     }
 
-    yesBtn.addEventListener('click', (e)=>{
+    let clicked = false;
+    yesBtn.addEventListener('click', ()=>{
+      if(clicked) return;
+      clicked = true;
+
       yesBtn.textContent = "YAY! 💞";
-      yesBtn.style.filter = "brightness(1.03)";
       accepted.classList.add('show');
 
       const r = yesBtn.getBoundingClientRect();
-      popHearts(r.left + r.width/2, r.top + r.height/2, 70);
+      popHearts(r.left + r.width/2, r.top + r.height/2, 90);
     });
   </script>
 </body>
